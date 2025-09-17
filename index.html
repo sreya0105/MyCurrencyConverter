@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Welcome | Currency Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Base styles */
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+      transition: background 0.3s ease, color 0.3s ease;
+      padding: 20px;
+    }
+
+    .homepage-wrapper {
+      background-color: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      max-width: 900px;
+      width: 100%;
+      display: flex;
+      gap: 40px;
+      padding: 40px 30px;
+      animation: fadeIn 1s ease;
+      color: #333;
+    }
+
+    /* Left Content */
+    .homepage-left {
+      flex: 2;
+      text-align: center;
+    }
+
+    .homepage-left h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #222;
+    }
+
+    .homepage-left p.intro {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 30px;
+    }
+
+    a.button {
+      display: inline-block;
+      padding: 12px 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+      margin-bottom: 30px;
+    }
+
+    a.button:hover {
+      background: linear-gradient(135deg, #56c6d3, #8a9bcf);
+    }
+
+    /* Exchange rates table */
+    h2 {
+      margin-top: 0;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .rate-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0 10px;
+    }
+
+    .rate-table th,
+    .rate-table td {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      text-align: left;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .rate-table th {
+      background-color: #f4f4f4;
+      color: #444;
+    }
+
+    .rate-table img {
+      width: 28px;
+      height: 20px;
+      vertical-align: middle;
+      margin-right: 10px;
+      border-radius: 3px;
+      box-shadow: 0 0 3px rgba(0,0,0,0.15);
+    }
+
+    #last-updated {
+      font-size: 0.85rem;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    /* Tips section */
+    .tips-section {
+      text-align: left;
+      font-size: 0.95rem;
+      color: #444;
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid #eee;
+    }
+
+    .tips-section h3 {
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .tips-section ul {
+      padding-left: 20px;
+      margin: 0;
+    }
+
+    .tips-section li {
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    /* Right Content: Clock & Calendar */
+    .homepage-right {
+      flex: 1;
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+      border-radius: 20px;
+      padding: 25px 20px;
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    .clock {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      font-family: 'Courier New', Courier, monospace;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .date {
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .calendar {
+      width: 100%;
+      background: white;
+      color: #333;
+      border-radius: 15px;
+      padding: 20px;
+      box-sizing: border-box;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+
+    .calendar h3 {
+      text-align: center;
+      margin: 0 0 15px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: #222;
+    }
+
+    .calendar table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .calendar th,
+    .calendar td {
+      text-align: center;
+      padding: 8px 0;
+      border-radius: 6px;
+      cursor: default;
+      font-weight: 600;
+      font-size: 0.95rem;
+      user-select: none;
+    }
+
+    .calendar th {
+      color: #74ebd5;
+      font-weight: 700;
+    }
+
+    .calendar td:hover:not(.empty):not(.today) {
+      background-color: #74ebd5;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    .calendar .today {
+      background-color: #56c6d3;
+      color: white;
+      font-weight: 700;
+      border-radius: 8px;
+    }
+
+    /* Dark Mode Styles */
+    body.dark-theme {
+      background: #121212;
+      color: #ddd;
+    }
+
+    body.dark-theme .homepage-wrapper {
+      background: #1f1f1f;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+      color: #eee;
+    }
+
+    body.dark-theme .rate-table th {
+      background-color: #333;
+      color: #ccc;
+    }
+
+    body.dark-theme .rate-table td {
+      border-color: #444;
+    }
+
+    body.dark-theme a.button {
+      background: linear-gradient(135deg, #56c6d3, #8a9bcf);
+      color: white;
+    }
+
+    body.dark-theme a.button:hover {
+      background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+    }
+
+    body.dark-theme #last-updated,
+    body.dark-theme .tips-section {
+      color: #bbb;
+    }
+
+    body.dark-theme .homepage-right {
+      background: #222;
+      color: #ddd;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+    }
+
+    body.dark-theme .calendar {
+      background: #2b2b2b;
+      color: #ddd;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
+    }
+
+    body.dark-theme .calendar th {
+      color: #56c6d3;
+    }
+
+    /* Dark mode toggle */
+    .toggle-container {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      user-select: none;
+    }
+
+    .toggle-container input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 850px) {
+      .homepage-wrapper {
+        flex-direction: column;
+        padding: 30px 20px;
+        max-width: 450px;
+      }
+      .homepage-right {
+        margin-top: 30px;
+        width: 100%;
+        flex: none;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .homepage-left h1 {
+        font-size: 2rem;
+      }
+
+      .homepage-left p.intro {
+        font-size: 1rem;
+      }
+
+      .clock {
+        font-size: 3rem;
+      }
+
+      .calendar h3 {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="homepage-wrapper">
+    <div class="homepage-left">
+      <h1>Currency Converter</h1>
+      <p class="intro">Convert currencies in real time with up-to-date exchange rates. Fast, free, and easy to use!</p>
+      <a href="currency.html" class="button">Start Converting 💱</a>
+
+      <div class="toggle-container">
+        <label for="toggle-theme">🌙 Dark Mode</label>
+        <input type="checkbox" id="toggle-theme" />
+      </div>
+
+      <h2>🌍 Live Exchange Rates (Base: USD)</h2>
+      <table class="rate-table" aria-label="Live currency exchange rates">
+        <thead>
+          <tr><th>Flag</th><th>Currency</th><th>Rate</th></tr>
+        </thead>
+        <tbody id="exchange-table-body">
+          <tr><td colspan="3">Loading rates...</td></tr>
+        </tbody>
+      </table>
+      <p id="last-updated">Last updated: --</p>
+
+      <div class="tips-section" aria-label="Travel tips">
+        <h3>💡 Travel Tips</h3>
+        <ul>
+          <li>Always check exchange rates before traveling.</li>
+          <li>Currency values change daily — use live tools!</li>
+          <li>Compare rates at multiple exchange booths for better deals.</li>
+          <li>Beware of hidden fees in currency exchange.</li>
+          <li>Use a credit card with no foreign transaction fees when possible.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="homepage-right" aria-label="Clock and calendar widget">
+      <div class="clock" id="clock">--:--:--</div>
+      <div class="date" id="date">Loading date...</div>
+
+      <div class="calendar" aria-label="Calendar">
+        <h3 id="calendar-month-year">Month Year</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Sun</th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th><th>Sat</th>
+            </tr>
+          </thead>
+          <tbody id="calendar-body">
+            <!-- Calendar days inserted here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Currency Flags and Rates fetch code (same as before)
+    const currencyFlags = {
+      USD: 'us',
+      EUR: 'eu',
+      JPY: 'jp',
+      GBP: 'gb',
+      INR: 'in',
+      AUD: 'au',
+      CAD: 'ca',
+      CHF: 'ch',
+      CNY: 'cn',
+      SEK: 'se',
+      NZD: 'nz',
+      KRW: 'kr',
+      MXN: 'mx',
+      SGD: 'sg',
+      HKD: 'hk'
+    };
+
+    function fetchRates() {
+      const base = 'USD';
+      const targets = Object.keys(currencyFlags).filter(c => c !== base);
+      const tableBody = document.getElementById('exchange-table-body');
+      const lastUpdated = document.getElementById('last-updated');
+
+      const url = `https://api.frankfurter.app/latest?from=${base}&to=${targets.join(',')}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          let rows = '';
+          for (const [code, rate] of Object.entries(data.rates)) {
+            const flag = currencyFlags[code];
+            rows += `
+              <tr>
+                <td><img src="https://flagcdn.com/24x18/${flag}.png" alt="${code} flag" loading="lazy" /></td>
+                <td>${code}</td>
+                <td>${rate.toFixed(4)}</td>
+              </tr>
+            `;
+          }
+          tableBody.innerHTML = rows;
+          lastUpdated.textContent = `Last updated: ${data.date}`;
+        })
+        .catch(() => {
+          tableBody.innerHTML = '<tr><td colspan="3">Failed to load rates.</td></tr>';
+          lastUpdated.textContent = 'Last updated: --';
+        });
+    }
+
+    // Dark mode toggle
+    const toggle = document.getElementById('toggle-theme');
+    toggle.addEventListener('change', () => {
+      document.body.classList.toggle('dark-theme', toggle.checked);
+      localStorage.setItem('darkMode', toggle.checked);
+    });
+
+    // Clock & Calendar functions
+    function updateClock() {
+      const now = new Date();
+      const clock = document.getElementById('clock');
+      const date = document.getElementById('date');
+
+      const hours = now.getHours().toString().padStart(2,'0');
+      const minutes = now.getMinutes().toString().padStart(2,'0');
+      const seconds = now.getSeconds().toString().padStart(2,'0');
+
+      clock.textContent = `${hours}:${minutes}:${seconds}`;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      date.textContent = now.toLocaleDateString(undefined, options);
+    }
+
+    function generateCalendar(year, month) {
+      const calendarBody = document.getElementById('calendar-body');
+      const monthYear = document.getElementById('calendar-month-year');
+
+      const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+
+      monthYear.textContent = `${months[month]} ${year}`;
+
+      // First day of month (0 = Sunday)
+      const firstDay = new Date(year, month, 1).getDay();
+      // Number of days in month
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+      let date = 1;
+      let rows = '';
+
+      // Usually 5 or 6 rows needed
+      for(let i = 0; i < 6; i++) {
+        let row = '<tr>';
+
+        for(let j = 0; j < 7; j++) {
+          if(i === 0 && j < firstDay) {
+            // empty cells before 1st day
+            row += '<td class="empty"></td>';
+          } else if(date > daysInMonth) {
+            row += '<td class="empty"></td>';
+          } else {
+            const today = new Date();
+            const isToday = date === today.getDate() &&
+                            month === today.getMonth() &&
+                            year === today.getFullYear();
+
+            row += `<td class="${isToday ? 'today' : ''}">${date}</td>`;
+            date++;
+          }
+        }
+        row += '</tr>';
+        rows += row;
+
+        if(date > daysInMonth) break;
+      }
+
+      calendarBody.innerHTML = rows;
+    }
+
+    // Persist theme & initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      const darkModePref = localStorage.getItem('darkMode') === 'true';
+      toggle.checked = darkModePref;
+      document.body.classList.toggle('dark-theme', darkModePref);
+
+      fetchRates();
+
+      updateClock();
+      setInterval(updateClock, 1000);
+
+      const now = new Date();
+      generateCalendar(now.getFullYear(), now.getMonth());
+    });
+  </script>
+</body>
+</html>
